@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Sinuous</title>
+
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+
+<style>
+a{cursor:pointer;}
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+li{list-style:none;}
+caption,th{text-align:left;}
+/* h1,h2,h3,h4,h5,h6{font-size:100%;} */
+q:before,q:after{content:'';}
+abbr,acronym {border:0;font-variant:normal;}
+sup {vertical-align:text-top;}
+sub {vertical-align:text-bottom;}
+input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;outline-style:none;outline-width:0pt;}
+legend{color:#000;}
+a:focus,object,h1,h2,h3,h4,h5,h6{-moz-outline-style: none; border:0px;}
+/*input[type="Submit"]{cursor:pointer;}*/
+strong {font-weight: bold;}
+
+body {
+	overflow: hidden;
+	font-family: Helvetica, Arial, sans-serif;
+	color: #333333;
+	font-size: 11px;
+	background-color: #222222;
+	
+	
+		color: #fff;
+	background: #17181c;
+	font: 300 1em 'Fira Sans', sans-serif;
+	-webkit-box-pack: center;
+		-ms-flex-pack: center;
+			justify-content: center;
+	-ms-flex-line-pack: center;
+		align-content: center;
+	-webkit-box-align: center;
+		-ms-flex-align: center;
+			align-items: center;
+	text-align: center;
+	min-height: 100vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+canvas {
+  background-color: #111111;
+}
+
+.ui {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #999999;
+  text-align: left;
+  padding: 8px;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+}
+
+#message {
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  text-align: center;
+}
+
+#status {
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  width: 50%;
+  height: 50%;
+  padding: 8px;
+  display: none;
+}
+
+
+#title {
+  margin-bottom: 20px;
+  color: #eeeeee;
+  font-size: 2vw;
+  
+}
+
+.ui ul {
+  margin: 10px 0 10px 0;
+  text-align: left;
+}
+
+
+#startButton {
+    position: absolute;
+    left: 38%;
+    top: 55%;
+    height: 25%;
+    width: 25%;
+    z-index: 99999999;
+    cursor: pointer;
+}
+
+#header {
+  position: absolute;
+  left: 20%;
+  top: 10%;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15vw ;
+  text-decoration: none;
+  color: white;
+  text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
+			   text-shadow: 0px 5px 50px #666;
+}
+
+p {
+	position: relative;
+	top: 30%;
+}
+	
+
+</style>
+</head>
+<body>
+<canvas id='world'></canvas>
+<div id="status" class="ui" onselectstart = "return false"></div>
+<div id="message" class="ui" onselectstart = "return false">
+<br><br><br><br><br><br><br>
+	<br>
+  <h2 id="title"></h2>
+  <br>
+ <!--<div id="startButton" onClick = "init" onselectstart = "return false">-->
+<img id="startButton" src="btn_resume.svg"  onselectstart = "return false" >
+ <!--</div>-->
+ <br>
+ <br>
+ <!--<div id="help" onClick = "alert(help)" onselectstart = "return false">
+ <p>Help</p>
+ </div>-->
+
+</div>
+
+<script type="text/javascript">
+var tlength = 70;
+var pquantity = 35;
+var equantity = 30;
+
+var pv = 15;
+var pa = 1;
+var ps = 10;
+
+var enemvx = 0.8;
+var enemvy = 0.8;
+var enemforce = 0.4;
+
+var enemsize = 50;
+var minimsize = 11;
+var consize = 11;
+var livesize = 11;
+var slowsize = 11;
+var stabsize = 11;
+var particlesize = 15;
+var tsize = 7;
+
+var boostchange = 1;
+var minimchange = 1;
+var conchange = 1;
+var stabchange = 1;
+var boostdinst = 300;
+var boostsize = 3.5;
+var boostchance = 0.996;
+var minimchance = 0.997;
+var livechance = 0.997;
+var slowchance = 0.7;
+var conchance = 0.8;
+var stabchance = 0.75;
+
+
+var	mindist = 50000;
+var diedist = 40;
+var springconst = 0.00001;
+var linew = 1;
+
+var linecolor = "white";
+var undegroundcolor = "#1a1a1a";
+var pcolor = "255, 255, 255";
+var enemcolor = '#ff0000'
+var boostcolor = '#00ffcc';
+var playerbfill = '#167a66';
+var playerbstroke = '#00ffcc';
+var tcolor = '#648d93';
+var playercolor = '#8ff1ff';
+var minimcolor = "#cc00cc";
+var livecolor = "lime";
+var slowcolor = "yellow";
+var concolor = "orange";
+var textcolor = "white";
+var stabcolor = "#ff3399";
+
+var alpha = 1;
+var blur = 2;
+var life = 3;
+
+var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') != -1) || (navigator.userAgent.toLowerCase().indexOf('iphone') != -1);
+var w = window.innerWidth;
+var h = window.innerHeight;
+var fk;
+var tk = 1.3;
+
+if (isMobile){
+	fk = 1200;
+	blur = 0;
+	mindist = 10000;
+	enemsize = 40;
+	enemvx = 0.4;
+	enemvy = 0.4;
+	equantity = 24;
+	particlesize = 18;
+	tk = 1.5;
+} else {
+	fk = 2000;
+}
+
+
+var res = enemsize;
+var rmd = mindist;
+var revx = enemvx;
+var revy = enemvy;
+
+
+
+var hk = h / fk;
+var wk = w / fk;
+var k = Math.sqrt(wk*hk);
+var canvas;
+var ctx;
+
+var status;
+var message;
+var title;
+var startButton;
+
+var enemies = [];
+var boosts = [];
+var minims = [];
+var particles = [];
+var slows = [];
+var lives = [];
+var cons = [];
+var stabs = [];
+var player;
+
+var mouseX = w / 2;
+var mouseY = h / 2;
+var mouseIsDown = false;
+
+var playing = false;
+var finished = false;
+var score = 0;
+var time = 0;
+
+var velocity = { x: -1.3, y: 1 };
+var difficulty = 1;
+var svelocity;
+var interval;
+function init(){
+	
+	canvas = document.getElementById('world');
+	status = document.getElementById('status');
+	message = document.getElementById('message');
+	title = document.getElementById('title');
+	startButton = document.getElementById('startButton');
+	
+	if (canvas && canvas.getContext) {
+		ctx = canvas.getContext('2d');
+		
+		// Register event listeners
+		document.addEventListener('mousemove', documentMouseMoveHandler, false);
+		document.addEventListener('mousedown', documentMouseDownHandler, false);
+		document.addEventListener('mouseup', documentMouseUpHandler, false);
+		canvas.addEventListener('touchstart', documentTouchStartHandler, false);
+		document.addEventListener('touchmove', documentTouchMoveHandler, false);
+		document.addEventListener('touchend', documentTouchEndHandler, false);
+		window.addEventListener('resize', windowResizeHandler, false);
+		startButton.addEventListener('mousedown', startButtonClickHandler, false);
+		startButton.addEventListener('touchstart', startButtonClickHandler, false);
+		player = new player();
+		
+		windowResizeHandler();
+		
+		setInterval(loop, 1000 / 60);
+	}
+}
+
+function startButtonClickHandler(event){
+	event.preventDefault();
+	
+	if( playing == false ) {
+		playing = true;
+		clearInterval(interval);
+		enemies = [];
+		boosts = [];
+		score = 0;
+		difficulty = 1;
+		life = 3;
+		
+		player.trail = [];
+		mouseX = w / 2;
+		mouseY = h / 2;
+		player.position.x = mouseX;
+		player.position.y = mouseY;
+		player.boost = 0;
+		
+		message.style.display = 'none';
+		
+	}
+}
+
+function gameOver() {
+	playing = false;
+    setTimeout(function(){
+		message.style.display = 'block';
+		finished = true;
+		interval = setInterval(function(){
+			color = Math.round(Math.random()*256) + ',' + Math.round(Math.random()*256) + ',' + Math.round(Math.random()*256) + '';
+			var p = {}
+			p.x = Math.random() * w;
+			p.y = Math.random() * h;
+			createParticles(p, 50, 30, color);
+		},800);
+	}, 10);
+}
+
+function documentMouseMoveHandler(event){
+	if( mouseIsDown ){
+		mouseX = event.clientX - 10;
+		mouseY = event.clientY - 10;
+	}
+}
+
+function documentMouseDownHandler(event){
+	mouseIsDown = true;
+	mouseX = event.clientX - 10;
+	mouseY = event.clientY - 10;
+}
+
+function documentMouseUpHandler(event) {
+	mouseIsDown = false;
+}
+
+function documentTouchStartHandler(event) {
+	if(event.touches.length == 1) {
+		event.preventDefault();
+		
+		mouseX = event.touches[0].pageX - 10*wk;
+		mouseY = event.touches[0].pageY - 20*hk;
+		
+		mouseIsDown = true;
+	}
+}
+
+function documentTouchMoveHandler(event) {
+	if(event.touches.length == 1) {
+		event.preventDefault();
+	
+		mouseX = event.touches[0].pageX - 10*wk;
+		mouseY = event.touches[0].pageY - 20*hk;
+	}
+}
+
+function documentTouchEndHandler(event) {
+	mouseIsDown = false;
+}
+
+function windowResizeHandler() {
+	w = window.innerWidth;
+	h = window.innerHeight;
+	
+	canvas.width = w;
+	canvas.height = h;
+	wk = w/fk;
+	hk = h/fk;
+	k = Math.sqrt(wk*hk);
+	var cvx = 0;
+	var cvy = 0;
+	
+	canvas.style.position = 'absolute';
+	canvas.style.left = cvx + 'px';
+	canvas.style.top = cvy + 'px';
+	
+	message.style.left = 0 + 'px';
+	message.style.top = 0  + 'px';
+}
+
+function createParticles( position, pq, psize, color ) {
+	var q = 10 + ( Math.random() * pq );
+	
+	for (var i = 0; i < q; i++) {
+		var p = new particle();
+		p.color = color;
+		p.position.x = position.x + ( Math.sin(q) * ps );
+		p.position.y = position.y + ( Math.cos(q) * ps );
+		p.velocity = { x: rpm() * Math.random() * pv * k, y: rpm() * Math.random() * pv * k };
+		p.alpha = pa;
+		p.size = Math.random() * psize;
+		particles.push( p );
+	}
+}
+
+function loop() {
+	ctx.globalAlpha = alpha;
+	ctx.fillStyle = undegroundcolor;
+	ctx.fillRect(0, 0, w, h);
+	svelocity = { x: velocity.x * difficulty, y: velocity.y * difficulty };
+  
+	var i, j, ilen, jlen;
+  
+	if( playing ) {
+		difficulty += 0.0008;
+		pp = {}
+		pp.position = clonePosition(player);
+		
+		player.position.x += ( mouseX - player.position.x ) * player.v;
+		player.position.y += ( mouseY - player.position.y ) * player.v;
+		
+		score += 0.1 * difficulty;
+
+		player.boost = Math.max( player.boost - boostchange, 0 );
+		player.minim = Math.max( player.minim - minimchange, 0 );
+		player.con = Math.max( player.con - conchange, 0 );
+		player.stab = Math.max( player.stab - stabchange, 0 );
+		
+		if ( player.boost > 0 && ( player.boost > 100 || player.boost % 3 != 0 ) ) {
+			drawpboost();
+		}
+		
+		
+		if ( player.minim > 0 ){
+			res = enemsize/2;
+			alpha = 0.5;
+		} else {
+			res = enemsize;
+			alpha = 1;
+		}
+		
+		if ( player.con > 0 ){
+			rmd = mindist;
+		} else {
+			rmd = 0;
+		}
+		
+		if ( player.stab > 0 ){
+			revx = 0;
+			revy = 0;
+		} else {
+			revx = enemvy;
+			revy = enemvx;
+		}
+		
+		
+		
+		var t = {};
+		t.position = {x: player.position.x, y: player.position.y}
+		player.trail.push( t );
+		
+		drawtrail();
+		
+		if( player.trail.length > tlength ) {
+			player.trail.shift();
+		}
+
+		drawplayer();
+	}
+  
+	if( playing && ( player.position.x < 0 || player.position.x > w || player.position.y < 0 || player.position.y > h ) ) {
+		gameOver();
+	}
+  
+	for( i = 0; i < enemies.length; i++ ) {
+		p = enemies[i];
+		
+		if( playing ) {
+			if( player.boost > 0 && distanceTo( p, player ) < (player.size*boostsize + p.size )*k ) {
+				createParticles( p.position, pquantity, particlesize, pcolor  );
+				enemies.splice( i, 1 );
+				i --;
+				score += 20;
+				continue;
+			}
+			else if(col(player, p)) {
+				life -= 1;
+				createParticles( p.position, pquantity, particlesize, pcolor  );
+				enemies.splice( i, 1 );
+				i --;
+				if (life <= 0 ){
+					createParticles( player.position, pquantity );;
+					gameOver();
+				}
+			}
+		}
+
+		drawenemy();
+		
+		for(var j = i + 1; j < enemies.length; ++j){
+			var p1 = p;
+			var p2 = enemies[ j ];
+			var dx = p1.position.x - p2.position.x;
+			var dy = p1.position.y - p2.position.y;
+			var dSquare = dx*dx + dy*dy;
+			
+			if(dSquare < rmd*k){
+				
+				p1.vx -= dx * springconst;
+				p1.vy -= dy * springconst;
+				p2.vx += dx * springconst;
+				p2.vy += dy * springconst;
+				
+				ctx.lineWidth = ( 1 - dSquare / (rmd*k)) * linew;
+				if(linew > 0) {
+					drawenemline(p1, p2);
+				}
+			}
+		}
+		
+		
+
+		p.position.x += svelocity.x * p.force + p.vx;
+		p.position.y += svelocity.y * p.force + p.vy;
+		
+		if( p.position.x < 0 - p.size*k - diedist*k || p.position.y > h+p.size*k+diedist*k ) {
+			enemies.splice( i, 1 );
+			i --;
+		}
+	}
+    
+    for( i = 0; i < boosts.length; i++ ) {
+        p = boosts[i];
+      
+		if(col(player, p)) {
+        player.boost = 500;
+			
+			for( j = 0; j < enemies.length; j++ ) {
+				e = enemies[j];
+			
+				if( distanceTo( player, e ) < boostdinst*k ) {
+					createParticles( e.position, pquantity, particlesize, pcolor  )
+					enemies.splice( j, 1 );
+					j--;
+					score += 100;
+				}
+			}
+        }    
+		drawboost();
+      
+		p.position.x += svelocity.x * p.force;
+		p.position.y += svelocity.y * p.force;
+      
+		if( p.position.x < 0 || p.position.y > h || player.boost != 0 ) {
+			boosts.splice( i, 1 );
+			i --;
+		}
+    }
+	
+	for( i = 0; i < minims.length; i++ ) {
+        p = minims[i];
+      
+		if(col(player, p)) {
+			player.minim = 500;
+			minims.splice( i, 1 );
+			i --;
+        }    
+		
+		drawminim();
+      
+		p.position.x += svelocity.x * p.force;
+		p.position.y += svelocity.y * p.force;
+      
+		if( p.position.x < 0 || p.position.y > h) {
+			minims.splice( i, 1 );
+			i --;
+		}
+    }
+	
+	for( i = 0; i < cons.length; i++ ) {
+        p = cons[i];
+      
+		if(col(player, p)) {
+			player.con = 500;
+			cons.splice( i, 1 );
+			i --;
+        }    
+		
+		drawcon();
+      
+		p.position.x += svelocity.x * p.force;
+		p.position.y += svelocity.y * p.force;
+      
+		if( p.position.x < 0 || p.position.y > h) {
+			cons.splice( i, 1 );
+			i --;
+		}
+    }
+	
+	for( i = 0; i < stabs.length; i++ ) {
+        p = stabs[i];
+      
+		if(col(player, p)) {
+			player.stab = 1000;
+			stabs.splice( i, 1 );
+			i --;
+        }    
+
+		drawstab();
+      
+		p.position.x += svelocity.x * p.force;
+		p.position.y += svelocity.y * p.force;
+      
+		if( p.position.x < 0 || p.position.y > h) {
+			stabs.splice( i, 1 );
+			i --;
+		}
+    }
+	
+	
+	for( i = 0; i < lives.length; i++ ) {
+        p = lives[i];
+      
+		if(col(player, p)) {
+			life += 1;
+			lives.splice( i, 1 );
+			i --;
+        }    
+
+		drawlive();
+      
+		p.position.x += svelocity.x * p.force;
+		p.position.y += svelocity.y * p.force;
+      
+		if( p.position.x < 0 || p.position.y > h) {
+			lives.splice( i, 1 );
+			i --;
+		}
+    }
+	
+	for( i = 0; i < slows.length; i++ ) {
+        p = slows[i];
+      
+		if(col(player, p)) {
+			difficulty /= 1.4;
+			slows.splice( i, 1 );
+			i --;
+        }    
+
+		drawslow();
+      
+		p.position.x += svelocity.x * p.force;
+		p.position.y += svelocity.y * p.force;
+      
+		if( p.position.x < 0 || p.position.y > h) {
+			slows.splice( i, 1 );
+			i --;
+		}
+    }
+    
+    if( enemies.length < equantity * difficulty ) {
+      enemies.push( positionNewOrganism( new enemy() ) )
+    }
+    
+    if( boosts.length < 1 && Math.random() > boostchance && player.boost == 0 ) {
+      boosts.push( positionNewOrganism( new boost() ) );
+    }
+	
+	if( minims.length < 1 && Math.random() > minimchance && player.minim == 0 ) {
+      minims.push( positionNewOrganism( new minim() ) );
+    }
+	
+	if( lives.length < 1 && Math.random() > livechance ) {
+      lives.push( positionNewOrganism( new live() ) );
+    }
+	
+	if( slows.length < 1 && Math.random() > slowchance ) {
+      slows.push( positionNewOrganism( new slow() ) );
+    }
+	
+	if( cons.length < 1 && Math.random() > conchance ) {
+      cons.push( positionNewOrganism( new con() ) );
+    }
+	
+	if( stabs.length < 1 && Math.random() > stabchance ) {
+      stabs.push( positionNewOrganism( new stab() ) );
+    }
+  
+    for( i = 0; i < particles.length; i++ ) {
+		p = particles[i];
+		
+		p.velocity.x += ( svelocity.x - p.velocity.x ) * 0.04;
+		p.velocity.y += ( svelocity.y - p.velocity.y ) * 0.04;
+		
+		p.position.x += p.velocity.x;
+		p.position.y += p.velocity.y;
+		
+		p.alpha -= 0.02;
+    
+		drawparticle();
+		
+		if( p.alpha <= 0 ) {
+			particles.splice( i, 1 );
+		}
+    }
+  
+    if( playing ) {
+		scoreText = 'Score:' + Math.round( score ) + '';
+		drawtext(scoreText, w/30*tk, h/8);
+		drawtext("lives:" + life, w - w/5.4*tk, h/8);
+	} else {
+		alpha = 1;
+		drawtitle();
+		if( finished ){
+			drawfinalscore();
+		}
+	}
+}
+
+function positionNewOrganism( p ) {
+	if( Math.random() > 0.5 ) {
+		p.position.x = Math.random() * w+p.size*k;
+		p.position.y = -p.size*k;
+    }
+	else {
+		p.position.x = w + p.size*k+diedist*k;
+		p.position.y = Math.random() * h;
+    }	
+  
+    return p;
+}
+  
+
+
+function distanceTo(p, q) {
+	var dx = p.position.x-q.position.x;
+	var dy = p.position.y-q.position.y;
+	return Math.sqrt(dx*dx + dy*dy);
+};
+function clonePosition(p) {
+	return { x: p.position.x, y: p.position.y };
+};
+
+function col(player, p){
+	return distanceTo( player, p) < ( player.size + p.size ) * k && playing;
+}
+
+function rpm() {
+	var rand = Math.random();
+	rand = Math.round(rand);
+	if(rand > 0.4) {
+		return 1;
+	}else {
+		return -1;
+	}
+}
+
+function player() {
+	this.position = { x: 0, y: 0 };
+	this.v = 0.13;
+	this.trail = [];
+	this.size = 17;
+	this.boost = 0;
+	this.minim = 0;
+	this.con = 0;
+	this.stab = 100;
+}
+
+
+
+function enemy() {
+    this.color = enemcolor;
+	this.position = { x: 0, y: 0 };
+    this.size = 6 + ( Math.random() * res );
+    this.force = 1 + ( Math.random() * enemforce );
+	this.vx = Math.random() * revx * rpm();
+	this.vy = Math.random() * revy * rpm();
+}
+
+
+
+function boost() {
+  this.color = boostcolor;
+  this.position = { x: 0, y: 0 };
+  this.size = 10 + Math.random() * 4 * boostsize;
+  this.force = 1 + ( Math.random() * 0.4 );
+}
+
+function minim() {
+  this.color = minimcolor;
+  this.position = { x: 0, y: 0 };
+  this.size = 10 + Math.random() * minimsize;
+  this.force = 1 + ( Math.random() * 0.4 );
+}
+
+function live() {
+  this.color = livecolor;
+  this.position = { x: 0, y: 0 };
+  this.size = 10 + Math.random() * livesize;
+  this.force = 1 + ( Math.random() * 0.4 );
+}
+
+
+function slow() {
+  this.color = slowcolor;
+  this.position = { x: 0, y: 0 };
+  this.size = 10 + Math.random() * slowsize;
+  this.force = 1 + ( Math.random() * 0.4 );
+}
+
+function con() {
+  this.color = concolor;
+  this.position = { x: 0, y: 0 };
+  this.size = 10 + Math.random() * consize;
+  this.force = 1 + ( Math.random() * 0.4 );
+}
+
+function stab() {
+  this.color = stabcolor;
+  this.position = { x: 0, y: 0 };
+  this.size = 10 + Math.random() * stabsize;
+  this.force = 1 + ( Math.random() * 0.4 );
+}
+
+function particle() {
+  this.position = { x: 0, y: 0 };
+  this.force = 1 + ( Math.random() * 0.4 );
+  this.color = pcolor;
+}
+
+
+
+/**GL**/
+function drawtext(text, x, y) { 
+	ctx.fillStyle = textcolor;
+	ctx.font = w/20*tk +"px Verdana";
+	ctx.textAlign = 'left';
+	ctx.shadowBlur = 0;
+    ctx.fillText(text, x, y);
+}
+
+
+  
+function drawplayer(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = playercolor;
+	ctx.beginPath();
+	ctx.fillStyle = playercolor;
+	ctx.arc(player.position.x, player.position.y, player.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawtrail(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = tcolor;
+	ctx.beginPath();
+	ctx.strokeStyle = tcolor;
+	ctx.lineWidth = tsize*k;
+	ctx.shadowColor = tcolor;
+	
+	for( i = 0, ilen = player.trail.length; i < ilen; i++ ) {
+		p = player.trail[i];
+	
+		ctx.lineTo( p.position.x, p.position.y );
+	
+		p.position.x += svelocity.x;
+		p.position.y += svelocity.y;
+	}
+	
+	ctx.stroke();
+	ctx.closePath();
+}
+
+function drawenemy(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = enemcolor;
+	ctx.beginPath();
+	ctx.fillStyle = enemcolor;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawboost(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = boostcolor;
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawpboost(){
+	ctx.shadowBlur = blur*2;
+	ctx.shadowColor = playerbstroke;
+	ctx.beginPath();
+	ctx.fillStyle = playerbfill;
+	ctx.strokeStyle = playerbstroke;
+	ctx.arc(player.position.x, player.position.y, player.size*boostsize*k, 0, Math.PI*2, true);
+	ctx.lineWidth = 6*k;
+	ctx.fill();
+	ctx.stroke();
+}
+
+function drawminim(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = minimcolor;
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawlive(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = livecolor;
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawslow(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = slowcolor;
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawcon(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = concolor;
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawstab(){
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = stabcolor;
+	ctx.beginPath();
+	ctx.fillStyle = p.color;
+	ctx.arc(p.position.x, p.position.y, p.size*k, 0, Math.PI*2, true);
+	ctx.fill();
+}
+
+function drawenemline(p1, p2){
+	ctx.shadowBlur = 0;
+	ctx.beginPath();
+	ctx.strokeStyle = linecolor;
+	ctx.moveTo( p1.position.x, p1.position.y );
+	ctx.lineTo( p2.position.x, p2.position.y );
+	ctx.stroke();
+	ctx.closePath();
+}
+
+function drawparticle(){
+	ctx.shadowBlur = 0;
+	ctx.fillStyle = 'rgba(' + p.color + ',' + Math.max(p.alpha,0)+')'
+	ctx.fillRect( p.position.x, p.position.y, p.size*k, p.size*k );
+}
+
+function drawfinalscore(){
+	var text = 'Game Over! (' + Math.round( score ) + ' points)';
+	ctx.textAlign = 'center';
+	ctx.fillStyle = textcolor;
+	ctx.font = w/30*tk +"px Verdana";
+	ctx.shadowBlur = blur;
+	ctx.shadowColor = textcolor;
+    ctx.fillText(text, w/2, h/3*tk);
+}
+
+function drawtitle(){
+	ctx.shadowBlur = blur*1.5;
+	ctx.shadowColor = textcolor;
+	var text = 'Cosinuos';
+	ctx.textAlign = 'center';
+	ctx.fillStyle = textcolor;
+	ctx.font = w/8*tk +"px Verdana";
+    ctx.fillText(text, w/2, h/3.7*tk);
+}
+
+init();
+
+var help = "a                 a"
+</script>
+</body>
+</html>
