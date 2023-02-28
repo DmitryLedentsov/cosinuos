@@ -1,4 +1,4 @@
 # cosinuos
 моя старенькая игрушка на JS....
 
-https://dimaledentsov.github.io/cosinuos/
+https://dmitryledentsov.github.io/cosinuos/
