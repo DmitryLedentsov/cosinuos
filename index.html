@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <meta name="theme-color" content="#07090f">
-  <meta name="description" content="Cosinuos — a minimal signal-drift arcade game.">
+  <meta name="theme-color" content="#020305">
+  <meta name="description" content="Cosinuos — a dark neon signal-drift arcade game.">
   <title>Cosinuos // Signal Drift</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -14,16 +14,63 @@
 
     <div class="ambient ambient-a" aria-hidden="true"></div>
     <div class="ambient ambient-b" aria-hidden="true"></div>
+    <div class="ambient ambient-c" aria-hidden="true"></div>
     <div class="scanlines" aria-hidden="true"></div>
+    <div class="noise-mask" aria-hidden="true"></div>
+
+    <div class="showcase showcase-left" aria-hidden="true">
+      <article class="show-card show-card-metric tilt-a">
+        <span class="show-label">LIVE SIGNALS</span>
+        <strong class="show-value">102.2k</strong>
+        <div class="show-mini-bars">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </article>
+
+      <article class="show-card show-card-list tilt-b">
+        <span class="show-label">ACTIVE NODES</span>
+        <ul class="mini-avatars">
+          <li><b></b><span>R01</span></li>
+          <li><b></b><span>R08</span></li>
+          <li><b></b><span>R13</span></li>
+        </ul>
+        <button type="button" tabindex="-1">Continue</button>
+      </article>
+    </div>
+
+    <div class="showcase showcase-right" aria-hidden="true">
+      <article class="show-card show-card-hero tilt-c">
+        <span class="show-label">GOOD MORNING</span>
+        <strong class="hero-title">Trace the flow</strong>
+        <div class="hero-curve">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="hero-strip">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </article>
+    </div>
+
+    <div class="showcase showcase-bottom" aria-hidden="true">
+      <article class="show-card show-card-analytics tilt-d">
+        <div>
+          <span class="show-label">FIELD SPREAD</span>
+          <strong class="show-value">37,84<span>.88</span></strong>
+        </div>
+        <div class="mini-chart">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </article>
+    </div>
 
     <header class="hud hud-top">
-      <section class="hud-block brand-block">
+      <section class="hud-block brand-block glass-card">
         <span class="hud-label">SYSTEM</span>
         <strong>COSINUOS</strong>
         <span class="brand-suffix">/ SIGNAL DRIFT</span>
       </section>
 
-      <section class="hud-block metric-block">
+      <section class="hud-block metric-block glass-card">
         <span class="hud-label">SIGNAL</span>
         <div class="metric-row">
           <strong id="scoreValue">000000</strong>
@@ -31,7 +78,7 @@
         </div>
       </section>
 
-      <section class="hud-block metric-block hud-right">
+      <section class="hud-block metric-block hud-right glass-card">
         <span class="hud-label">PEAK</span>
         <strong id="highScoreValue">000000</strong>
       </section>
@@ -40,17 +87,17 @@
     <aside class="effect-stack" id="effectStack" aria-live="polite"></aside>
 
     <footer class="hud hud-bottom">
-      <section class="hud-block lives-block">
+      <section class="hud-block lives-block glass-card">
         <span class="hud-label">INTEGRITY</span>
         <div id="livesValue" class="integrity-dots" aria-label="Three integrity points"></div>
       </section>
 
-      <section class="hud-block status-block">
+      <section class="hud-block status-block glass-card">
         <span class="hud-label">FLOW</span>
         <strong id="flowValue">CALIBRATING</strong>
       </section>
 
-      <section class="hud-block controls-block hud-right">
+      <section class="hud-block controls-block hud-right glass-card">
         <span><kbd>POINTER</kbd> steer</span>
         <span><kbd>SPACE</kbd> pause</span>
         <button id="soundButton" class="icon-button" type="button" aria-label="Toggle sound">SOUND ON</button>
@@ -60,14 +107,14 @@
     <section id="overlay" class="overlay is-visible" aria-live="assertive">
       <div class="overlay-grid" aria-hidden="true"></div>
       <div class="intro-mark" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
         <span></span>
       </div>
-      <div class="panel">
+      <div class="panel hero-panel">
         <p id="overlayKicker" class="panel-kicker">INTERACTIVE SIGNAL / 01</p>
-        <h1 id="overlayTitle">Trace the flow.<br>Avoid the noise.</h1>
+        <h1 id="overlayTitle">Make the chase<br>feel electric.</h1>
         <p id="overlayCopy" class="panel-copy">
-          Guide the signal through an unstable field. Collect anomalies, chain eliminations and keep the line alive.
+          Glide through a black neon field, dodge hostile geometry and collect stylish anomalies that bend the whole run.
         </p>
         <div id="runStats" class="run-stats" hidden>
           <div><span>SCORE</span><strong id="finalScore">0</strong></div>
@@ -78,7 +125,7 @@
           <span id="primaryButtonLabel">ENTER THE FLOW</span>
           <b aria-hidden="true">↗</b>
         </button>
-        <p class="panel-footnote">Move with the pointer or WASD / arrows. Pickups are identified by their geometric signature.</p>
+        <p class="panel-footnote">Move with the pointer or WASD / arrows. Pickups are encoded as bright geometric signatures.</p>
       </div>
     </section>
 
