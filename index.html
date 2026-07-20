@@ -4,71 +4,158 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="Cosinuos — a dark signal-drift arcade game.">
-  <title>Cosinuos // Signal Drift</title>
+  <meta name="description" content="Cosinuos — a meditative precision arcade game.">
+  <title>Cosinuos — Ride the Signal</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="game-shell" aria-label="Cosinuos game">
-    <canvas id="world" aria-label="Game field"></canvas>
-    <div class="ambient ambient-a" aria-hidden="true"></div>
-    <div class="ambient ambient-b" aria-hidden="true"></div>
-    <div class="ambient ambient-c" aria-hidden="true"></div>
-    <div class="field-vignette" aria-hidden="true"></div>
-    <div class="scanlines" aria-hidden="true"></div>
+  <main class="app-shell" id="appShell">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <div class="ambient ambient-three" aria-hidden="true"></div>
+    <div class="orbit orbit-a" aria-hidden="true"></div>
+    <div class="orbit orbit-b" aria-hidden="true"></div>
 
-    <header class="hud hud-top">
-      <section class="hud-chip brand-chip">
-        <span class="status-led" aria-hidden="true"></span>
-        <span class="brand-copy"><small>COSINUOS</small><strong>SIGNAL DRIFT</strong></span>
-      </section>
-      <section class="score-card">
-        <span class="hud-label">SCORE</span>
-        <div class="score-row"><strong id="scoreValue">000000</strong><span id="multiplierValue">×1.0</span></div>
-      </section>
-      <section class="hud-chip peak-chip">
-        <span class="hud-label">PEAK</span><strong id="highScoreValue">000000</strong>
-      </section>
+    <header class="page-brand">
+      <span class="brand-dot"></span>
+      <span>COSINUOS</span>
+      <small>RIDE THE SIGNAL</small>
     </header>
 
-    <aside class="effect-stack" id="effectStack" aria-live="polite"></aside>
+    <section class="desk" aria-label="Cosinuos interface">
+      <aside class="side-column side-left" aria-label="Run metrics">
+        <article class="app-card score-card parallax-card" data-depth="0.55">
+          <div class="card-heading">
+            <span>RUN SIGNAL</span>
+            <i class="online-dot"></i>
+          </div>
+          <div class="score-ring" id="scoreRing">
+            <div class="score-ring-copy">
+              <small>LIVE SCORE</small>
+              <strong id="scoreValue">000000</strong>
+              <span id="scoreDelta">+0.0%</span>
+            </div>
+          </div>
+          <div class="triple-stats">
+            <div><small>TIME</small><strong id="timeValue">0:00</strong></div>
+            <div><small>CHAIN</small><strong id="chainValue">×1.0</strong></div>
+            <div><small>PEAK</small><strong id="peakValue">000000</strong></div>
+          </div>
+        </article>
 
-    <footer class="hud hud-bottom">
-      <section class="hud-chip lives-chip">
-        <span class="hud-label">INTEGRITY</span>
-        <div id="livesValue" class="integrity-dots" aria-label="Three integrity points"></div>
-      </section>
-      <section class="hud-chip flow-chip"><span class="flow-dot" aria-hidden="true"></span><strong id="flowValue">CALIBRATING</strong></section>
-      <section class="hud-chip controls-chip">
-        <span><kbd>POINTER</kbd> STEER</span><span><kbd>SPACE</kbd> PAUSE</span>
-        <button id="soundButton" class="icon-button" type="button" aria-label="Toggle sound">SOUND ON</button>
-      </section>
-    </footer>
+        <article class="app-card chain-card parallax-card" data-depth="0.34">
+          <div class="card-heading"><span>SIGNAL CHAIN</span><small id="chainState">QUIET</small></div>
+          <div class="chain-visual" aria-hidden="true">
+            <i class="chain-node node-a"></i>
+            <i class="chain-line line-a"></i>
+            <i class="chain-node node-b"></i>
+            <i class="chain-line line-b"></i>
+            <i class="chain-node node-c"></i>
+          </div>
+          <div class="meter-copy">
+            <span>RESONANCE</span>
+            <strong id="resonanceValue">0%</strong>
+          </div>
+          <div class="segmented-meter" id="resonanceMeter" aria-label="Resonance meter">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <p>Glide close to danger. Contact breaks the chain.</p>
+        </article>
+      </aside>
 
-    <section id="overlay" class="overlay is-visible" aria-live="assertive">
-      <div class="hero-stage" aria-hidden="true">
-        <div class="hero-signal">
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          <span class="signal-orb orb-a"></span><span class="signal-orb orb-b"></span><span class="signal-orb orb-c"></span>
+      <section class="game-card parallax-card" data-depth="0.18" id="gameCard">
+        <header class="game-card-head">
+          <button class="icon-button" id="menuButton" type="button" aria-label="Pause game">
+            <span></span><span></span>
+          </button>
+          <div class="game-title">
+            <strong>COSINUOS</strong>
+            <small>PRECISION FLOW / 01</small>
+          </div>
+          <button class="icon-button sound-button" id="soundButton" type="button" aria-label="Toggle sound">
+            <span class="sound-wave"></span>
+          </button>
+        </header>
+
+        <div class="arena-shell" id="arenaShell">
+          <canvas id="world" aria-label="Cosinuos game field"></canvas>
+          <div class="arena-vignette" aria-hidden="true"></div>
+          <div class="arena-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+          <section class="game-overlay is-visible" id="gameOverlay" aria-live="polite">
+            <div class="overlay-signal" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <b></b>
+            </div>
+            <p class="eyebrow" id="overlayEyebrow">A QUIET SKILL GAME</p>
+            <h1 id="overlayTitle">Follow the curve.<br>Touch nothing.</h1>
+            <p class="overlay-copy" id="overlayCopy">Guide a tiny signal through a living field. Graze hazards to build resonance. Hold focus for precise movement.</p>
+            <div class="final-stats" id="finalStats" hidden>
+              <div><small>SCORE</small><strong id="finalScore">0</strong></div>
+              <div><small>PEAK CHAIN</small><strong id="finalChain">×1.0</strong></div>
+              <div><small>GRAZES</small><strong id="finalGrazes">0</strong></div>
+            </div>
+            <button class="launch-button" id="launchButton" type="button">
+              <span id="launchLabel">ENTER THE FLOW</span>
+              <b>→</b>
+            </button>
+            <p class="control-note">POINTER / WASD TO STEER · HOLD SHIFT OR POINTER TO FOCUS · SPACE TO PAUSE</p>
+          </section>
+
+          <div class="pause-pill" id="pausePill" hidden>PAUSED</div>
+          <div class="pickup-toast" id="pickupToast" hidden>
+            <i id="pickupIcon">◇</i>
+            <span><strong id="pickupName">LUCID</strong><small id="pickupDescription">FIELD SLOWS</small></span>
+          </div>
         </div>
-        <p class="hero-caption">LIVE FIELD / 001</p>
-      </div>
-      <div class="panel">
-        <p id="overlayKicker" class="panel-kicker">INTERACTIVE SIGNAL / 01</p>
-        <h1 id="overlayTitle">Stay inside<br>the flow.</h1>
-        <p id="overlayCopy" class="panel-copy">Guide the signal through hostile geometry. Collect anomalies, bend the field and build a clean chain.</p>
-        <div id="runStats" class="run-stats" hidden>
-          <div><span>SCORE</span><strong id="finalScore">0</strong></div>
-          <div><span>PEAK CHAIN</span><strong id="finalCombo">×1.0</strong></div>
-          <div><span>RUNTIME</span><strong id="finalTime">0:00</strong></div>
-        </div>
-        <button id="primaryButton" class="primary-button" type="button"><span id="primaryButtonLabel">ENTER THE FLOW</span><b aria-hidden="true">↗</b></button>
-        <p class="panel-footnote">POINTER / WASD / ARROWS · EACH ANOMALY HAS ITS OWN SIGNATURE</p>
-      </div>
+
+        <footer class="game-card-foot">
+          <div class="focus-readout">
+            <span>FOCUS</span>
+            <div class="focus-track"><i id="focusBar"></i></div>
+            <strong id="focusValue">100</strong>
+          </div>
+          <div class="mode-readout"><i></i><span id="modeValue">DRIFT MODE</span></div>
+          <div class="life-readout" id="lifeReadout" aria-label="Three lives"></div>
+        </footer>
+      </section>
+
+      <aside class="side-column side-right" aria-label="Field information">
+        <article class="app-card field-card parallax-card" data-depth="0.42">
+          <div class="card-heading"><span>FIELD STATE</span><small id="fieldStatus">CALM</small></div>
+          <div class="field-orbit" aria-hidden="true">
+            <div class="field-core"></div>
+            <i class="field-node field-node-a">◇</i>
+            <i class="field-node field-node-b">○</i>
+            <i class="field-node field-node-c">△</i>
+            <i class="field-node field-node-d">+</i>
+          </div>
+          <div class="triple-stats compact">
+            <div><small>DENSITY</small><strong id="densityValue">0%</strong></div>
+            <div><small>FLOW</small><strong id="flowValue">LOW</strong></div>
+            <div><small>GRAZES</small><strong id="grazeValue">0</strong></div>
+          </div>
+        </article>
+
+        <article class="app-card effects-card parallax-card" data-depth="0.27">
+          <div class="card-heading"><span>ACTIVE SIGNALS</span><small id="effectCount">0 / 3</small></div>
+          <div class="effect-list" id="effectList">
+            <div class="effect-empty">
+              <span class="empty-glyph">∞</span>
+              <p>Collect rare nodes to bend the field.</p>
+            </div>
+          </div>
+        </article>
+      </aside>
     </section>
 
-    <div id="pauseBadge" class="pause-badge" hidden>PAUSED / SPACE TO RESUME</div>
+    <footer class="page-foot">
+      <span>LOCAL PEAK <strong id="highScoreValue">000000</strong></span>
+      <span class="page-foot-center">MEDITATIVE PRECISION ARCADE</span>
+      <span id="fpsValue">60 FPS</span>
+    </footer>
   </main>
+
   <script src="game.js" defer></script>
 </body>
 </html>
