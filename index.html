@@ -7,6 +7,7 @@
   <meta name="description" content="Cosinuos — a meditative precision arcade game.">
   <title>Cosinuos — Ride the Signal</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="start-screen.css">
 </head>
 <body>
   <main class="app-shell" id="appShell">
@@ -15,6 +16,38 @@
     <div class="ambient ambient-three" aria-hidden="true"></div>
     <div class="orbit orbit-a" aria-hidden="true"></div>
     <div class="orbit orbit-b" aria-hidden="true"></div>
+
+    <section class="start-screen" id="startScreen" aria-label="Start Cosinuos">
+      <div class="start-card">
+        <div class="start-topline">
+          <span class="start-status"><i></i> SIGNAL READY</span>
+          <span class="start-version">FLOW / 01</span>
+        </div>
+
+        <div class="start-art" aria-hidden="true">
+          <div class="start-orbits">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <b></b>
+          </div>
+        </div>
+
+        <div class="start-copy">
+          <p>COSINUOS</p>
+          <h1>Ride the signal.<br>Miss by millimetres.</h1>
+          <span>A small meditative precision game about flow, focus and passing dangerously close.</span>
+        </div>
+
+        <button class="start-button" id="startButton" type="button">
+          <span>START</span>
+          <b>→</b>
+        </button>
+
+        <div class="start-controls">
+          <span>POINTER / WASD — MOVE</span>
+          <span>SHIFT / HOLD — FOCUS</span>
+        </div>
+      </div>
+    </section>
 
     <header class="page-brand">
       <span class="brand-dot"></span>
@@ -157,5 +190,6 @@
   </main>
 
   <script src="game.js" defer></script>
+  <script src="start-screen.js" defer></script>
 </body>
 </html>
