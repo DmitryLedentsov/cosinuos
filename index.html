@@ -4,28 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="Cosinuos — a meditative precision arcade game.">
-  <title>Cosinuos — Ride the Signal</title>
+  <meta name="description" content="Cosinuos — a meditative precision flight game.">
+  <title>Cosinuos — Signal Flight</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="start-screen.css">
 </head>
 <body>
   <main class="app-shell" id="appShell">
-    <div class="ambient ambient-one" aria-hidden="true"></div>
-    <div class="ambient ambient-two" aria-hidden="true"></div>
-    <div class="ambient ambient-three" aria-hidden="true"></div>
-    <div class="orbit orbit-a" aria-hidden="true"></div>
-    <div class="orbit orbit-b" aria-hidden="true"></div>
+    <div class="ambient ambient-a" aria-hidden="true"></div>
+    <div class="ambient ambient-b" aria-hidden="true"></div>
+    <div class="ambient ambient-c" aria-hidden="true"></div>
+    <div class="global-orbit global-orbit-a" aria-hidden="true"></div>
+    <div class="global-orbit global-orbit-b" aria-hidden="true"></div>
+
+    <header class="page-brand">
+      <span class="brand-mark"><i></i></span>
+      <strong>COSINUOS</strong>
+      <span>SIGNAL FLIGHT</span>
+    </header>
 
     <section class="start-screen" id="startScreen" aria-label="Start Cosinuos">
-      <div class="start-card">
-        <div class="start-topline">
-          <span class="start-status"><i></i> SIGNAL READY</span>
-          <span class="start-version">FLOW / 01</span>
-        </div>
+      <article class="start-card">
+        <header class="start-meta">
+          <span><i></i>SIGNAL READY</span>
+          <span>FLIGHT / 02</span>
+        </header>
 
         <div class="start-art" aria-hidden="true">
-          <div class="start-orbits">
+          <div class="flight-orbit">
             <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
             <b></b>
           </div>
@@ -33,37 +38,28 @@
 
         <div class="start-copy">
           <p>COSINUOS</p>
-          <h1>Ride the signal.<br>Miss by millimetres.</h1>
-          <span>A small meditative precision game about flow, focus and passing dangerously close.</span>
+          <h1>Fly the line.<br>Hold the nerve.</h1>
+          <span>A small, meditative precision flight through a living signal field. Thread gates, skim hazards, keep the chain alive.</span>
         </div>
 
-        <button class="start-button" id="startButton" type="button">
-          <span>START</span>
-          <b>→</b>
+        <button class="primary-button" id="startButton" type="button">
+          <span>START FLIGHT</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
         </button>
 
-        <div class="start-controls">
-          <span>POINTER / WASD — MOVE</span>
+        <footer class="start-controls">
+          <span>POINTER / WASD — STEER</span>
           <span>SHIFT / HOLD — FOCUS</span>
-        </div>
-      </div>
+        </footer>
+      </article>
     </section>
 
-    <header class="page-brand">
-      <span class="brand-dot"></span>
-      <span>COSINUOS</span>
-      <small>RIDE THE SIGNAL</small>
-    </header>
-
-    <section class="desk" aria-label="Cosinuos interface">
-      <aside class="side-column side-left" aria-label="Run metrics">
-        <article class="app-card score-card parallax-card" data-depth="0.55">
-          <div class="card-heading">
-            <span>RUN SIGNAL</span>
-            <i class="online-dot"></i>
-          </div>
-          <div class="score-ring" id="scoreRing">
-            <div class="score-ring-copy">
+    <section class="desk" id="desk" aria-label="Cosinuos flight interface">
+      <aside class="side-column side-left" aria-label="Run telemetry">
+        <article class="app-card score-card">
+          <header class="card-heading"><span>RUN SIGNAL</span><i class="status-dot"></i></header>
+          <div class="score-ring">
+            <div>
               <small>LIVE SCORE</small>
               <strong id="scoreValue">000000</strong>
               <span id="scoreDelta">+0.0%</span>
@@ -76,106 +72,93 @@
           </div>
         </article>
 
-        <article class="app-card chain-card parallax-card" data-depth="0.34">
-          <div class="card-heading"><span>SIGNAL CHAIN</span><small id="chainState">QUIET</small></div>
-          <div class="chain-visual" aria-hidden="true">
-            <i class="chain-node node-a"></i>
-            <i class="chain-line line-a"></i>
-            <i class="chain-node node-b"></i>
-            <i class="chain-line line-b"></i>
-            <i class="chain-node node-c"></i>
+        <article class="app-card chain-card">
+          <header class="card-heading"><span>SIGNAL CHAIN</span><small id="chainState">QUIET</small></header>
+          <div class="chain-path" aria-hidden="true">
+            <i class="chain-icon chain-icon-a"><svg viewBox="0 0 24 24"><path d="M12 5l7 7-7 7-7-7z"/></svg></i>
+            <b></b>
+            <i class="chain-icon chain-icon-b"><svg viewBox="0 0 24 24"><path d="M8 12l3 3 6-7"/></svg></i>
+            <b></b>
+            <i class="chain-icon chain-icon-c"><svg viewBox="0 0 24 24"><path d="M12 4l7 15H5z"/></svg></i>
           </div>
-          <div class="meter-copy">
-            <span>RESONANCE</span>
-            <strong id="resonanceValue">0%</strong>
-          </div>
-          <div class="segmented-meter" id="resonanceMeter" aria-label="Resonance meter">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-          <p>Glide close to danger. Contact breaks the chain.</p>
+          <div class="meter-copy"><span>RESONANCE</span><strong id="resonanceValue">0%</strong></div>
+          <div class="segmented-meter" id="resonanceMeter"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p>Near misses build the chain. A hit breaks it.</p>
         </article>
       </aside>
 
-      <section class="game-card parallax-card" data-depth="0.18" id="gameCard">
+      <section class="game-card" id="gameCard">
         <header class="game-card-head">
-          <button class="icon-button" id="menuButton" type="button" aria-label="Pause game">
-            <span></span><span></span>
+          <button class="icon-button" id="menuButton" type="button" aria-label="Pause">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12M6 16h8"/></svg>
           </button>
           <div class="game-title">
             <strong>COSINUOS</strong>
-            <small>PRECISION FLOW / 01</small>
+            <small>PRECISION FLIGHT / 02</small>
           </div>
           <button class="icon-button sound-button" id="soundButton" type="button" aria-label="Toggle sound">
-            <span class="sound-wave"></span>
+            <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4h3l4 4V6L8 10H5zM16 9c1 .8 1.5 1.8 1.5 3S17 14.2 16 15M18.5 6.5C20.2 8 21 9.8 21 12s-.8 4-2.5 5.5"/></svg>
+            <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10v4h3l4 4V6L8 10H5zM16 9l5 6M21 9l-5 6"/></svg>
           </button>
         </header>
 
         <div class="arena-shell" id="arenaShell">
-          <canvas id="world" aria-label="Cosinuos game field"></canvas>
+          <canvas id="world" aria-label="Cosinuos flight field"></canvas>
           <div class="arena-vignette" aria-hidden="true"></div>
           <div class="arena-corners" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
-          <section class="game-overlay is-visible" id="gameOverlay" aria-live="polite">
-            <div class="overlay-signal" aria-hidden="true">
-              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-              <b></b>
-            </div>
-            <p class="eyebrow" id="overlayEyebrow">A QUIET SKILL GAME</p>
-            <h1 id="overlayTitle">Follow the curve.<br>Touch nothing.</h1>
-            <p class="overlay-copy" id="overlayCopy">Guide a tiny signal through a living field. Graze hazards to build resonance. Hold focus for precise movement.</p>
-            <div class="final-stats" id="finalStats" hidden>
+          <section class="game-overlay" id="gameOverlay" aria-live="polite">
+            <p class="eyebrow" id="overlayEyebrow">RUN COMPLETE / SIGNAL STORED</p>
+            <h1 id="overlayTitle">The flight ended.<br>The line remains.</h1>
+            <p class="overlay-copy" id="overlayCopy">Precision builds slowly. Return to the current and hold the chain a little longer.</p>
+            <div class="final-stats" id="finalStats">
               <div><small>SCORE</small><strong id="finalScore">0</strong></div>
               <div><small>PEAK CHAIN</small><strong id="finalChain">×1.0</strong></div>
-              <div><small>GRAZES</small><strong id="finalGrazes">0</strong></div>
+              <div><small>GATES</small><strong id="finalGrazes">0</strong></div>
             </div>
-            <button class="launch-button" id="launchButton" type="button">
-              <span id="launchLabel">ENTER THE FLOW</span>
-              <b>→</b>
+            <button class="primary-button compact" id="launchButton" type="button">
+              <span id="launchLabel">FLY AGAIN</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
             </button>
-            <p class="control-note">POINTER / WASD TO STEER · HOLD SHIFT OR POINTER TO FOCUS · SPACE TO PAUSE</p>
           </section>
 
           <div class="pause-pill" id="pausePill" hidden>PAUSED</div>
           <div class="pickup-toast" id="pickupToast" hidden>
-            <i id="pickupIcon">◇</i>
+            <i id="pickupIcon"></i>
             <span><strong id="pickupName">LUCID</strong><small id="pickupDescription">FIELD SLOWS</small></span>
           </div>
         </div>
 
         <footer class="game-card-foot">
-          <div class="focus-readout">
-            <span>FOCUS</span>
-            <div class="focus-track"><i id="focusBar"></i></div>
-            <strong id="focusValue">100</strong>
-          </div>
-          <div class="mode-readout"><i></i><span id="modeValue">DRIFT MODE</span></div>
-          <div class="life-readout" id="lifeReadout" aria-label="Three lives"></div>
+          <div class="focus-readout"><span>FOCUS</span><div class="focus-track"><i id="focusBar"></i></div><strong id="focusValue">100</strong></div>
+          <div class="mode-readout"><i></i><span id="modeValue">CRUISE</span></div>
+          <div class="life-readout" id="lifeReadout" aria-label="Three integrity points"></div>
         </footer>
       </section>
 
-      <aside class="side-column side-right" aria-label="Field information">
-        <article class="app-card field-card parallax-card" data-depth="0.42">
-          <div class="card-heading"><span>FIELD STATE</span><small id="fieldStatus">CALM</small></div>
+      <aside class="side-column side-right" aria-label="Flight information">
+        <article class="app-card field-card">
+          <header class="card-heading"><span>FIELD STATE</span><small id="fieldStatus">FLOWING</small></header>
           <div class="field-orbit" aria-hidden="true">
             <div class="field-core"></div>
-            <i class="field-node field-node-a">◇</i>
-            <i class="field-node field-node-b">○</i>
-            <i class="field-node field-node-c">△</i>
-            <i class="field-node field-node-d">+</i>
+            <i class="field-node field-node-a"><svg viewBox="0 0 24 24"><path d="M12 5l7 7-7 7-7-7z"/></svg></i>
+            <i class="field-node field-node-b"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/></svg></i>
+            <i class="field-node field-node-c"><svg viewBox="0 0 24 24"><path d="M12 5l7 13H5z"/></svg></i>
+            <i class="field-node field-node-d"><svg viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg></i>
           </div>
           <div class="triple-stats compact">
             <div><small>DENSITY</small><strong id="densityValue">0%</strong></div>
             <div><small>FLOW</small><strong id="flowValue">LOW</strong></div>
-            <div><small>GRAZES</small><strong id="grazeValue">0</strong></div>
+            <div><small>GATES</small><strong id="grazeValue">0</strong></div>
           </div>
         </article>
 
-        <article class="app-card effects-card parallax-card" data-depth="0.27">
-          <div class="card-heading"><span>ACTIVE SIGNALS</span><small id="effectCount">0 / 3</small></div>
+        <article class="app-card effects-card">
+          <header class="card-heading"><span>ACTIVE SIGNALS</span><small id="effectCount">0 / 3</small></header>
           <div class="effect-list" id="effectList">
             <div class="effect-empty">
-              <span class="empty-glyph">∞</span>
-              <p>Collect rare nodes to bend the field.</p>
+              <span class="empty-glyph"><svg viewBox="0 0 24 24"><path d="M5 12c2-4 5-4 7 0s5 4 7 0-5-4-7 0-5 4-7 0z"/></svg></span>
+              <p>Collect rare nodes to bend the flow.</p>
             </div>
           </div>
         </article>
@@ -184,12 +167,11 @@
 
     <footer class="page-foot">
       <span>LOCAL PEAK <strong id="highScoreValue">000000</strong></span>
-      <span class="page-foot-center">MEDITATIVE PRECISION ARCADE</span>
+      <span>MEDITATIVE PRECISION FLIGHT</span>
       <span id="fpsValue">60 FPS</span>
     </footer>
   </main>
 
   <script src="game.js" defer></script>
-  <script src="start-screen.js" defer></script>
 </body>
 </html>
