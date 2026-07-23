@@ -1,0 +1,247 @@
+/* Flight-mode refinements: cleaner icons, stronger sense of motion, compact skill HUD. */
+
+.arena-shell {
+  background:
+    radial-gradient(circle at 95% 4%, rgba(72, 104, 255, 0.08), transparent 31%),
+    linear-gradient(135deg, #010205, #000 58%);
+  box-shadow:
+    inset 0 0 95px rgba(0,0,0,.92),
+    0 0 0 1px rgba(255,255,255,.015);
+}
+
+.arena-vignette {
+  background:
+    linear-gradient(135deg, transparent 0 54%, rgba(68,94,255,.025) 82%, rgba(255,79,189,.022) 100%),
+    radial-gradient(circle at center, transparent 42%, rgba(0,0,0,.22) 72%, rgba(0,0,0,.74) 100%);
+}
+
+.game-title small { color: #8189a0; }
+.mode-readout i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--violet);
+  box-shadow: inset 0 0 8px rgba(155,103,255,.26), 0 0 12px rgba(155,103,255,.2);
+}
+
+.life-readout {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+}
+.life-readout i {
+  width: 17px;
+  height: 6px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 999px;
+  background: rgba(255,255,255,.025);
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+.life-readout i.is-live {
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  border-color: rgba(95,231,255,.48);
+  box-shadow: 0 0 13px rgba(95,231,255,.28);
+}
+
+/* Coherent icon system: thin SVG strokes, clean spacing and color hierarchy. */
+.icon-button svg,
+.chain-icon svg,
+.field-node svg,
+.empty-glyph svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-button svg {
+  width: 18px;
+  height: 18px;
+  color: #d2d7e2;
+}
+.icon-button:hover svg { color: var(--cyan); }
+.sound-button .sound-off { display: none; }
+.sound-button.is-muted .sound-on { display: none; }
+.sound-button.is-muted .sound-off { display: block; }
+
+.chain-icon svg {
+  width: 17px;
+  height: 17px;
+  color: #fff;
+}
+
+.field-node {
+  color: var(--node-color, #fff);
+  transition: transform 180ms ease, filter 180ms ease;
+  animation: field-node-breathe 3.4s ease-in-out infinite;
+}
+.field-node svg {
+  width: 16px;
+  height: 16px;
+  color: #fff;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+.field-node-a { --node-color: var(--pink); }
+.field-node-b { --node-color: var(--blue); animation-delay: -.8s; }
+.field-node-c { --node-color: var(--amber); animation-delay: -1.6s; }
+.field-node-d { --node-color: var(--cyan); animation-delay: -2.4s; }
+@keyframes field-node-breathe {
+  50% { filter: brightness(1.28); }
+}
+
+.empty-glyph {
+  position: relative;
+  display: block;
+  width: 38px;
+  height: 20px;
+  margin: 0 auto 14px;
+}
+.empty-glyph::before,
+.empty-glyph::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  width: 14px;
+  height: 10px;
+  border: 1px solid #4f5668;
+  border-radius: 50%;
+}
+.empty-glyph::before { left: 4px; transform: rotate(27deg); }
+.empty-glyph::after { right: 4px; transform: rotate(-27deg); }
+
+.effect-glyph {
+  position: relative;
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  border: 1px solid var(--effect-color, rgba(255,255,255,.26));
+  background: rgba(255,255,255,.018);
+  box-shadow: inset 0 0 16px color-mix(in srgb, var(--effect-color, #fff) 18%, transparent);
+}
+.effect-glyph::before,
+.effect-glyph::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.effect-lucid::before {
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--cyan);
+  border-radius: 50%;
+}
+.effect-lucid::after {
+  width: 17px;
+  height: 1px;
+  background: var(--cyan);
+  transform: translate(-50%, -50%) rotate(-38deg);
+}
+.effect-echo::before {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--violet);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.effect-echo::after {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--violet);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.effect-phase::before {
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--pink);
+  border-radius: 50%;
+}
+.effect-phase::after {
+  width: 1px;
+  height: 18px;
+  background: var(--pink);
+  transform: translate(-50%, -50%) rotate(36deg);
+}
+.effect-bloom::before,
+.effect-bloom::after {
+  width: 15px;
+  height: 1px;
+  background: var(--amber);
+}
+.effect-bloom::after { transform: translate(-50%, -50%) rotate(90deg); }
+
+.active-effect {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 4px 9px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+}
+.active-effect::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(var(--effect-progress) * 100%);
+  height: 1px;
+  background: var(--effect-color);
+  box-shadow: 0 0 10px var(--effect-color);
+}
+.active-effect span strong,
+.active-effect span small,
+.active-effect > b {
+  font-family: "SFMono-Regular", Consolas, monospace;
+}
+.active-effect span strong {
+  display: block;
+  font-size: 8px;
+  letter-spacing: .14em;
+}
+.active-effect span small {
+  display: block;
+  margin-top: 4px;
+  color: #70788c;
+  font-size: 6px;
+  letter-spacing: .08em;
+}
+.active-effect > b {
+  color: var(--effect-color);
+  font-size: 8px;
+  font-weight: 500;
+}
+
+.pickup-toast .effect-glyph {
+  --effect-color: var(--pickup-color);
+  width: 32px;
+  height: 32px;
+}
+
+/* Overlay motif now reads like a moving flight path rather than a static app illustration. */
+.overlay-signal {
+  width: min(62%, 280px);
+  aspect-ratio: 1.65;
+  transform: rotate(-8deg);
+}
+.overlay-signal i {
+  clip-path: inset(0 0 54% 0);
+}
+.overlay-signal b {
+  width: 14px;
+  height: 14px;
+  left: 78%;
+  top: 35%;
+}
+
+.game-overlay h1 {
+  max-width: 500px;
+}
+
+@media (max-width: 980px) {
+  .field-node { transform: scale(.92); }
+}
